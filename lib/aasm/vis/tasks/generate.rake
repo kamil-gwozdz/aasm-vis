@@ -5,7 +5,8 @@ end
 namespace :aasm_vis do
   desc 'Generate markdown file with visualisation of AASM state machines.'
 
-  task :generate do
+  dependencies = defined?(Rails) ? [:environment] : []
+  task generate: dependencies do
     helper = Helper.new
     helper.generate_markdown
   end
