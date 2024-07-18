@@ -1,0 +1,5 @@
+require 'aasm/vis'
+
+spec = Gem::Specification.find_by_name 'aaasm-vis'
+rakefile = "#{spec.gem_dir}/lib/Rakefile"
+load rakefile
