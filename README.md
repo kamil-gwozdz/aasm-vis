@@ -8,7 +8,7 @@ Add `gem 'aasm-vis', group: :development` to your `Gemfile` and run `bundle`.
 
 ## Usage
 
-TODO: Write usage instructions here
+`bundle exec rake aasm_vis:generate`
 
 ## Development
 
