@@ -34,7 +34,7 @@ module AASM
             stateDiagram-v2
             
               #{klass.aasm(column).states.map { |state| "#{state.name} : #{state.default_display_name}" }.join("\n") }
-            
+              
               #{transitions.map { |from, to| "#{from.nil? ? "[*]" : from } --> #{to}" }.join("\n") }
             ```
           TXT
