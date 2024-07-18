@@ -26,6 +26,11 @@ module AASM
             end
           end
 
+
+
+
+
+
           results << <<~TXT
             ```mermaid
             ---
@@ -36,6 +41,8 @@ module AASM
               #{klass.aasm(column).states.map { |state| "#{state.name} : #{state.default_display_name}" }.join("\n") }
               
               #{transitions.map { |from, to| "#{from.nil? ? "[*]" : from } --> #{to}" }.join("\n") }
+
+              #{transitions.map { |_from, to| "#{to} --> [*]" if transitions.none? { |t| t[0] == to } }.reject(&:nil?).join("\n")}
             ```
           TXT
         end
