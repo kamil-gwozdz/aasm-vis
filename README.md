@@ -4,7 +4,7 @@
 
 ## Installation
 
-Add `gem 'aasm-vis', require: false, group: :development` to your `Gemfile` and run `bundle`.
+Add `gem 'aasm-vis', group: :development` to your `Gemfile` and run `bundle`.
 
 ## Usage
 
