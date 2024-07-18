@@ -4,7 +4,7 @@ require_relative "vis/version"
 
 module AASM
   module Vis
-    require 'vis/railtie' if defined?(Rails)
+    require_relative 'vis/railtie' if defined?(Rails)
 
     class Error < StandardError; end
 
