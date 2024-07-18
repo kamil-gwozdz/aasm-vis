@@ -26,9 +26,9 @@ class Job < ApplicationRecord
     state :finished_with_error
     
     event :run, after: :notify_somebody do
-    transitions from: :created, to: :running
-    transitions from: :running, to: :finished_with_error
-    transitions from: :running, to: :finished_successfully
+      transitions from: :created, to: :running
+      transitions from: :running, to: :finished_with_error
+      transitions from: :running, to: :finished_successfully
     end
   end
 end
