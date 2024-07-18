@@ -13,6 +13,48 @@ Add `gem 'aasm-vis', group: :development` to your `Gemfile` and run `bundle`.
 To visualise the results you can use the [github cli](https://cli.github.com/): `gh gist create tmp/assm-vis.md` or any other tool that can render markdown files supporting mermaid.
 
 
+## Example
+
+The following ruby code defines a simple state machine for a `Job` model:
+```ruby
+  class Job < ApplicationRecord
+    include AASM
+
+    aasm do
+      state :created, initial: true
+      state :running
+      state :finished_successfully
+      state :finished_with_error
+
+      event :run, after: :notify_somebody do
+        transitions from: :created, to: :running
+        transitions from: :running, to: :finished_with_error
+        transitions from: :running, to: :finished_successfully
+      end
+    end
+```
+
+It will generate the following mermaid diagram:
+
+```mermaid
+---
+title: Job#default
+---
+stateDiagram-v2
+
+created : Created
+running : Running
+finished_successfully : Finished successfully
+finished_with_error : Finished with error
+  
+created --> running
+running --> finished_with_error
+running --> finished_successfully
+
+finished_with_error --> [*]
+finished_successfully --> [*]
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

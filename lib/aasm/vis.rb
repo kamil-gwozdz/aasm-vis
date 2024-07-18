@@ -26,11 +26,6 @@ module AASM
             end
           end
 
-
-
-
-
-
           results << <<~TXT
             ```mermaid
             ---
