@@ -1,4 +1,4 @@
-# AASM::Vis
+# `aasm-vis`
 
 `aasm-vis` generates a visual representation of the state machines defined with `aasm` gem.
 
