@@ -12,7 +12,6 @@ Add `gem 'aasm-vis', group: :development` to your `Gemfile` and run `bundle`.
 
 To visualise the results you can use the [github cli](https://cli.github.com/): `gh gist create tmp/assm-vis.md` or any other tool that can render markdown files supporting mermaid.
 
-
 ## Example
 
 The following ruby code defines a simple state machine for a `Job` model:
