@@ -7,6 +7,12 @@ module AASM
     class Error < StandardError; end
 
     def generate_markdown
+      begin
+        Rails.application.eager_load!
+      rescue
+        # not using rails
+      end
+
       results = []
 
       AASM::StateMachineStore.stores.each do |klass_name, klass_store|
