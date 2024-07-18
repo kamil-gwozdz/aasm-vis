@@ -46,6 +46,7 @@ running : Running
 finished_successfully : Finished successfully
 finished_with_error : Finished with error
   
+[*] --> created
 created --> running
 running --> finished_with_error
 running --> finished_successfully
