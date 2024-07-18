@@ -3,7 +3,7 @@
 require_relative "vis/version"
 
 module AASM
-  class Vis
+  module Vis
     class Error < StandardError; end
 
     def generate_markdown
