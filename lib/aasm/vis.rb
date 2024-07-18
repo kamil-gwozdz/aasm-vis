@@ -9,11 +9,7 @@ module AASM
     class Error < StandardError; end
 
     def generate_markdown
-      begin
-        Rails.application.eager_load!
-      rescue
-        # not using rails
-      end
+      Rails.application.eager_load! if defined?(Rails)
 
       results = []
 
