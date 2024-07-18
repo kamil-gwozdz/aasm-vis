@@ -16,28 +16,29 @@ To visualise the results you can use the [github cli](https://cli.github.com/): 
 
 The following ruby code defines a simple state machine for a `Job` model:
 ```ruby
-  class Job < ApplicationRecord
-    include AASM
-
-    aasm do
-      state :created, initial: true
-      state :running
-      state :finished_successfully
-      state :finished_with_error
-
-      event :run, after: :notify_somebody do
-        transitions from: :created, to: :running
-        transitions from: :running, to: :finished_with_error
-        transitions from: :running, to: :finished_successfully
-      end
+class Job < ApplicationRecord
+  include AASM
+  
+  aasm :state do
+    state :created, initial: true
+    state :running
+    state :finished_successfully
+    state :finished_with_error
+    
+    event :run, after: :notify_somebody do
+    transitions from: :created, to: :running
+    transitions from: :running, to: :finished_with_error
+    transitions from: :running, to: :finished_successfully
     end
+  end
+end
 ```
 
 It will generate the following mermaid diagram:
 
 ```mermaid
 ---
-title: Job#default
+title: Job#state
 ---
 stateDiagram-v2
 
