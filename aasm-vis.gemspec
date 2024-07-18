@@ -33,5 +33,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "aasm", "~> 5"
-  # TODO: add rails or railties or rake?
+
+  # TODO make it work without Rails
+  spec.add_dependency "rake"
+  spec.add_dependency "railties"
 end
