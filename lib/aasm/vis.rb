@@ -12,24 +12,32 @@ module AASM
 
     class Error < StandardError; end
 
-    # Writes the Mermaid markdown for every AASM state machine to +tmp/aasm-vis.md+.
+    # Writes the Mermaid markdown for the AASM state machines to +tmp/aasm-vis.md+.
     #
+    # @param only [Array<String>, nil] class names to include; nil or empty
+    #   generates every machine (the default).
     # @return [void]
-    def generate_markdown
+    def generate_markdown(only: nil)
       Rails.application.eager_load! if defined?(Rails)
 
       path = File.join(Dir.pwd, "tmp", "aasm-vis.md")
-      File.write(path, build_diagrams)
+      File.write(path, build_diagrams(only: only))
       puts "File written to: #{path}"
     end
 
-    # Builds the Mermaid markdown for every AASM state machine.
+    # Builds the Mermaid markdown for the AASM state machines.
     #
+    # @param only [Array<String>, nil] class names to include; nil or empty
+    #   includes every machine. Namespaced classes must be given in full
+    #   (e.g. "Billing::Invoice").
     # @return [String] concatenated ```mermaid blocks, one per state machine.
-    def build_diagrams
+    def build_diagrams(only: nil)
+      filter = Array(only).map(&:to_s).reject(&:empty?)
       diagrams = []
 
       AASM::StateMachineStore.stores.each do |klass_name, klass_store|
+        next unless included?(klass_name, filter)
+
         klass = klass_name.safe_constantize
         klass_store.machine_names.each { |column| diagrams << diagram_for(klass, column) }
       end
@@ -38,6 +46,11 @@ module AASM
     end
 
     private
+
+    # @return [Boolean] true when filter is empty (include all) or names this class.
+    def included?(klass_name, filter)
+      filter.empty? || filter.include?(klass_name.to_s)
+    end
 
     # Builds a single ```mermaid stateDiagram-v2 block for one machine.
     #

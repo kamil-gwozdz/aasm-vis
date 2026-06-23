@@ -27,8 +27,25 @@ class Job
   end
 end
 
+# A second machine, used to assert that model selection includes/excludes the
+# right diagrams.
+class Order
+  include AASM
+
+  aasm :status do
+    state :draft, initial: true
+    state :placed
+
+    event :place do
+      transitions from: :draft, to: :placed
+    end
+  end
+end
+
 RSpec.describe AASM::Vis do
-  subject(:markdown) { Class.new { include AASM::Vis }.new.build_diagrams }
+  subject(:markdown) { helper.build_diagrams }
+
+  let(:helper) { Class.new { include AASM::Vis }.new }
 
   it "has a version number" do
     expect(AASM::Vis::VERSION).not_to be_nil
@@ -60,5 +77,33 @@ RSpec.describe AASM::Vis do
   it "marks states with no outgoing transition as terminal" do
     expect(markdown).to include("finished_successfully --> [*]")
     expect(markdown).to include("finished_with_error --> [*]")
+  end
+end
+
+RSpec.describe AASM::Vis, "model selection via only:" do
+  let(:helper) { Class.new { include AASM::Vis }.new }
+
+  it "generates every machine when only is nil (the default)" do
+    expect(helper.build_diagrams).to include("title: Job#state").and include("title: Order#status")
+  end
+
+  it "generates every machine when only is empty" do
+    result = helper.build_diagrams(only: [])
+    expect(result).to include("title: Job#state").and include("title: Order#status")
+  end
+
+  it "limits output to the named classes" do
+    result = helper.build_diagrams(only: %w[Order])
+    expect(result).to include("title: Order#status")
+    expect(result).not_to include("title: Job#state")
+  end
+
+  it "accepts multiple class names" do
+    result = helper.build_diagrams(only: %w[Job Order])
+    expect(result).to include("title: Job#state").and include("title: Order#status")
+  end
+
+  it "produces no diagrams when no named class matches" do
+    expect(helper.build_diagrams(only: %w[Nonexistent])).to eq("")
   end
 end
