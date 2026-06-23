@@ -12,6 +12,18 @@ Add `gem 'aasm-vis', group: :development` to your `Gemfile` and run `bundle`.
 
 To visualise the results you can use the [github cli](https://cli.github.com/): `gh gist create tmp/aasm-vis.md` or any other tool that can render markdown files supporting mermaid.
 
+### Selecting models
+
+By default every AASM state machine in the application is diagrammed. To limit
+the output to specific classes, pass them as rake task arguments:
+
+```sh
+bundle exec rake 'aasm_vis:generate[Job,Order]'
+```
+
+The quotes are required in zsh, which otherwise treats the brackets as a glob.
+Namespaced classes must be given in full, e.g. `'aasm_vis:generate[Billing::Invoice]'`.
+
 ## Example
 
 The following ruby code defines a simple state machine for a `Job` model:

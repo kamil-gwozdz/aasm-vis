@@ -12,3 +12,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Label each state-diagram edge with the event that triggers the transition
   (`from --> to : event_name`), so transitions leaving the same state are no
   longer ambiguous.
+- Limit generation to specific classes via rake task arguments, e.g.
+  `rake 'aasm_vis:generate[Job,Order]'`. With no arguments every machine is
+  still generated.

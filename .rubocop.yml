@@ -11,3 +11,8 @@ Style/StringLiteralsInInterpolation:
 
 Layout/LineLength:
   Max: 120
+
+# Example-heavy spec files legitimately exceed the default block length.
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*"
