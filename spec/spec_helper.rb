@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require "aasm"
+# safe_constantize is provided by ActiveSupport, which Rails loads for us in a
+# real app. Specs run without Rails, so require the inflections directly.
+require "active_support/core_ext/string/inflections"
 require "aasm/vis"
 
 RSpec.configure do |config|

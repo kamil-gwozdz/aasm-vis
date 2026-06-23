@@ -10,7 +10,7 @@ Add `gem 'aasm-vis', group: :development` to your `Gemfile` and run `bundle`.
 
 `bundle exec rake aasm_vis:generate`
 
-To visualise the results you can use the [github cli](https://cli.github.com/): `gh gist create tmp/assm-vis.md` or any other tool that can render markdown files supporting mermaid.
+To visualise the results you can use the [github cli](https://cli.github.com/): `gh gist create tmp/aasm-vis.md` or any other tool that can render markdown files supporting mermaid.
 
 ## Example
 
@@ -18,23 +18,31 @@ The following ruby code defines a simple state machine for a `Job` model:
 ```ruby
 class Job < ApplicationRecord
   include AASM
-  
+
   aasm :state do
     state :created, initial: true
     state :running
     state :finished_successfully
     state :finished_with_error
-    
-    event :run, after: :notify_somebody do
+
+    event :run do
       transitions from: :created, to: :running
-      transitions from: :running, to: :finished_with_error
+    end
+
+    event :succeed do
       transitions from: :running, to: :finished_successfully
+    end
+
+    event :error do
+      transitions from: :running, to: :finished_with_error
     end
   end
 end
 ```
 
-It will generate the following mermaid diagram:
+It will generate the following mermaid diagram. Each edge is labelled with the
+event that triggers the transition, so transitions leaving the same state stay
+distinguishable:
 
 ```mermaid
 ---
@@ -46,14 +54,13 @@ created : Created
 running : Running
 finished_successfully : Finished successfully
 finished_with_error : Finished with error
-  
-[*] --> created
-created --> running
-running --> finished_with_error
-running --> finished_successfully
 
-finished_with_error --> [*]
+created --> running : run
+running --> finished_successfully : succeed
+running --> finished_with_error : error
+
 finished_successfully --> [*]
+finished_with_error --> [*]
 ```
 
 ## Development
